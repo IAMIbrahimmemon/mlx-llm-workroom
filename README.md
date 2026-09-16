@@ -1,3 +1,7 @@
+
+
+
+
 <div align="center">
 
 <img src="assets/icon-512.png" width="128" alt="Workroom">
@@ -22,7 +26,7 @@ One model reads the screen, runs commands and edits files. Nothing leaves the ma
 ---
 
 <div align="center">
-
+https://github.com/user-attachments/assets/5c9df203-3618-451d-bf9a-8a0800e91fb0
 <video src="https://github.com/IAMIbrahimmemon/mlx-llm-workroom/raw/main/docs/demo.mp4" controls poster="docs/demo-poster.png" width="100%"></video>
 
 <em>Setup start to finish, 38 seconds, no edits. Recorded just before the rename, so the app still says &ldquo;Lab&rdquo; on screen.<br>
