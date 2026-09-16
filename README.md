@@ -42,22 +42,23 @@ rather not think about it.
 
 ## Install
 
-**The app** — [download the latest release][latest], drag it to Applications,
-and it will walk you through the rest.
-
-> [!NOTE]
-> The app is **not notarised**, so macOS will refuse to open it on the first
-> try. Right-click it → **Open** → **Open**, once. After that it launches
-> normally. If you would rather not, the CLI below does the same job.
-
-**Or from source:**
+The runtime is the same either way — the app is a friendlier front door onto it.
 
 ```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh     # if you don't have uv
 git clone https://github.com/IAMIbrahimmemon/mlx-llm-workroom
-cd mlx-llm-workroom
-uv sync
+cd mlx-llm-workroom && uv sync
 uv run workroom          # onboards on first run, then drops into the REPL
 ```
+
+Prefer the app? [Download the latest release][latest] as well. It finds the
+folder above in the usual places and asks you to point at it otherwise.
+
+> [!NOTE]
+> The app is **not notarised** — this is a free project and Apple charges for a
+> developer account. macOS will refuse to open it the first time: right-click
+> it → **Open** → **Open**, once. Each release publishes a SHA-256 so you can
+> check the download.
 
 | command | what it does |
 |---|---|

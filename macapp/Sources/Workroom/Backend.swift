@@ -7,28 +7,64 @@ import Foundation
 @MainActor
 final class Backend: ObservableObject {
     enum Failure: LocalizedError {
-        case notFound(String)
+        case missingUV
+        case missingRepo
         case failed(String, String)
 
         var errorDescription: String? {
             switch self {
-            case .notFound(let what): "Could not find \(what)."
-            case .failed(let what, let why): "\(what) failed: \(why)"
+            case .missingUV:
+                "The `uv` command is not installed."
+            case .missingRepo:
+                "Could not find the Workroom runtime on this Mac."
+            case .failed(let what, let why):
+                "\(what) failed: \(why)"
             }
         }
     }
 
-    /// The repo root, found by walking up from the executable until a marker
-    /// appears. Lets the app run from `swift run` and from a bundle.
-    static let repoRoot: URL = {
+    /// Where the Python runtime lives.
+    ///
+    /// A downloaded `.app` sitting in /Applications has no repo above it, so
+    /// this checks, in order: a folder the user already picked, the usual
+    /// clone locations, then the path above the executable (which is what
+    /// `swift run` and a build-tree bundle want). Returns nil rather than
+    /// guessing, so the UI can ask instead of failing silently.
+    static let repoDefaultsKey = "WorkroomRepoPath"
+
+    static func findRepo() -> URL? {
+        let fm = FileManager.default
+        func isRepo(_ url: URL) -> Bool {
+            fm.fileExists(atPath: url.appendingPathComponent("agent/bridge.py").path)
+        }
+
+        if let saved = UserDefaults.standard.string(forKey: repoDefaultsKey) {
+            let url = URL(fileURLWithPath: saved)
+            if isRepo(url) { return url }
+        }
+
         var dir = URL(fileURLWithPath: CommandLine.arguments[0]).resolvingSymlinksInPath()
         for _ in 0..<8 {
             dir.deleteLastPathComponent()
-            let marker = dir.appendingPathComponent("agent/bridge.py")
-            if FileManager.default.fileExists(atPath: marker.path) { return dir }
+            if isRepo(dir) { return dir }
         }
-        return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-    }()
+
+        let home = URL(fileURLWithPath: NSHomeDirectory())
+        let guesses = ["mlx-llm-workroom", "Developer/mlx-llm-workroom",
+                       "Documents/mlx-llm-workroom", "Documents/GitHub/mlx-llm-workroom",
+                       "src/mlx-llm-workroom", "code/mlx-llm-workroom"]
+        for g in guesses {
+            let url = home.appendingPathComponent(g)
+            if isRepo(url) { return url }
+        }
+        return nil
+    }
+
+    static func remember(repo: URL) {
+        UserDefaults.standard.set(repo.path, forKey: repoDefaultsKey)
+    }
+
+    static var uvInstalled: Bool { uv() != nil }
 
     private static func uv() -> String? {
         let candidates = ["/opt/homebrew/bin/uv", "/usr/local/bin/uv",
@@ -37,11 +73,12 @@ final class Backend: ObservableObject {
     }
 
     private static func launch(_ args: [String]) throws -> Process {
-        guard let uv = uv() else { throw Failure.notFound("the `uv` command") }
+        guard let uv = uv() else { throw Failure.missingUV }
+        guard let repo = findRepo() else { throw Failure.missingRepo }
         let p = Process()
         p.executableURL = URL(fileURLWithPath: uv)
         p.arguments = args
-        p.currentDirectoryURL = repoRoot
+        p.currentDirectoryURL = repo
         return p
     }
 
@@ -123,10 +160,11 @@ final class Backend: ObservableObject {
 
     /// Opens Terminal on the repo and starts the REPL.
     func launchCLI() {
+        guard let repo = Self.findRepo() else { return }
         let script = """
         tell application "Terminal"
             activate
-            do script "cd \(Self.repoRoot.path) && uv run workroom"
+            do script "cd \(repo.path) && uv run workroom"
         end tell
         """
         if let apple = NSAppleScript(source: script) {

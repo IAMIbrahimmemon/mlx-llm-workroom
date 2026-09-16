@@ -138,7 +138,7 @@
       View source
     </a>
   </div>
-  <p class="meta">Apple silicon &middot; macOS 14+ &middot; 16 GB memory or more &middot; MIT licensed</p>
+  <p class="meta">Apple silicon &middot; macOS 14+ &middot; 16 GB memory or more &middot; needs <span class="mono">uv</span> &middot; MIT licensed</p>
 </div>
 
 <div class="wrap">
@@ -149,13 +149,24 @@
 
 <section>
   <div class="wrap">
-    <h2>Opening it the first time</h2>
-    <p>Workroom is not notarised &mdash; it is a free open-source project and
-       Apple charges for a developer account. macOS will refuse to open it on
-       the first attempt. This is the standard way around that, and you only do
-       it once.</p>
+    <h2>What you need first</h2>
+    <p>The app is the friendly front door, not the whole thing &mdash; the model
+       and tools run in a Python runtime you keep on disk. Two commands, once.</p>
+<pre><span class="c"># 1. uv, if you don't have it</span>
+<span class="c">$</span> curl -LsSf https://astral.sh/uv/install.sh | sh
+
+<span class="c"># 2. the runtime</span>
+<span class="c">$</span> git clone https://github.com/IAMIbrahimmemon/mlx-llm-workroom
+<span class="c">$</span> cd mlx-llm-workroom &amp;&amp; uv sync</pre>
+    <p style="margin-top:22px">Then open the app &mdash; it finds that folder in
+       the usual places, and asks you to point at it if you put it somewhere
+       unusual. You can also skip the app entirely and run
+       <span class="mono">uv run workroom</span>.</p>
+
     <div class="note">
-      <strong>Right-click, don't double-click</strong>
+      <strong>The app is not notarised &mdash; right-click, don't double-click</strong>
+      <p>This is a free open-source project and Apple charges for a developer
+         account, so macOS will refuse to open it on the first attempt.</p>
       <ol class="steps">
         <li>Unzip and drag <span class="mono">Workroom.app</span> to Applications.</li>
         <li><strong>Right-click</strong> it (or Control-click) and choose <strong>Open</strong>.</li>
@@ -163,13 +174,9 @@
       </ol>
       <p style="margin-top:10px">After that it launches normally. If macOS still
          blocks it, go to System Settings &rarr; Privacy &amp; Security and click
-         <strong>Open Anyway</strong>.</p>
+         <strong>Open Anyway</strong>. Every release lists a SHA-256 so you can
+         check what you downloaded.</p>
     </div>
-    <p style="margin-top:22px">Prefer not to run unsigned software? The command
-       line does the same job, from source you can read:</p>
-<pre><span class="c">$</span> git clone https://github.com/IAMIbrahimmemon/mlx-llm-workroom
-<span class="c">$</span> cd mlx-llm-workroom &amp;&amp; uv sync
-<span class="c">$</span> uv run workroom</pre>
   </div>
 </section>
 

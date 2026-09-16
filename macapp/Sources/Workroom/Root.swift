@@ -5,6 +5,8 @@ final class Flow: ObservableObject {
     @Published var screen: Screen = .welcome
     @Published var survey: Survey?
     @Published var loadError: String?
+    @Published var needsSetup = false
+    @Published var missingUV = false
 
     @Published var brain = ""
     @Published var gateway = ""
@@ -33,6 +35,13 @@ final class Flow: ObservableObject {
     }
 
     func loadSurvey() async {
+        // Resolve the runtime before anything else: a downloaded app has no
+        // repo above it, and "choose your folder" is a far better first screen
+        // than a stack trace.
+        missingUV = !Backend.uvInstalled
+        needsSetup = missingUV || Backend.findRepo() == nil
+        if needsSetup { return }
+
         do {
             let s = try await backend.survey()
             survey = s
@@ -110,7 +119,12 @@ struct RootView: View {
 
     var body: some View {
         Group {
-            if let survey = flow.survey {
+            if flow.needsSetup {
+                SetupView(missingUV: flow.missingUV) {
+                    flow.needsSetup = false
+                    Task { await flow.loadSurvey() }
+                }
+            } else if let survey = flow.survey {
                 Chrome(screen: flow.screen) {
                     content(survey)
                         .transition(.asymmetric(
@@ -195,8 +209,12 @@ struct RootView: View {
             Text(message)
                 .font(Theme.mono(12)).foregroundStyle(Theme.ink2(scheme))
                 .multilineTextAlignment(.center).frame(maxWidth: 520)
-            Text("The app runs the Python runtime in this repo. Check `uv sync` has been run.")
+            Text("The app runs the Python runtime in the Workroom repo. Check that `uv sync` has been run there.")
                 .font(Theme.ui(13)).foregroundStyle(Theme.ink3(scheme))
+            SecondaryButton(title: "Choose a different folder") {
+                flow.needsSetup = true
+            }
+            .padding(.top, 6)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(40)

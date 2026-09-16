@@ -11,6 +11,18 @@ enum Snapshotter {
         let dir = URL(fileURLWithPath: directory)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
 
+        // The setup screen needs no survey -- it is what you see when the
+        // runtime has not been found yet.
+        for (name, missingUV) in [("setup-repo", false), ("setup-uv", true)] {
+            for scheme in [ColorScheme.light, .dark] {
+                let view = SetupView(missingUV: missingUV, onResolved: {})
+                    .environment(\.colorScheme, scheme)
+                    .frame(width: 1000, height: 700)
+                write(view, to: dir.appendingPathComponent(
+                    "\(name)\(scheme == .dark ? "-dark" : "").png"))
+            }
+        }
+
         let survey = (try? loadSurvey()) ?? nil
         guard let survey else {
             FileHandle.standardError.write(Data("snapshot: could not read the survey\n".utf8))
@@ -25,7 +37,7 @@ enum Snapshotter {
                        to: dir.appendingPathComponent("\(name).png"))
             }
         }
-        print("wrote \(Screen.allCases.count * 2) screens to \(dir.path)")
+        print("wrote \(Screen.allCases.count * 2 + 4) screens to \(dir.path)")
         exit(0)
     }
 
@@ -46,10 +58,13 @@ enum Snapshotter {
 
     private static func render(screen: Screen, survey: Survey,
                                scheme: ColorScheme, to url: URL) {
-        let view = SnapshotFrame(screen: screen, survey: survey)
-            .environment(\.colorScheme, scheme)
-            .frame(width: 1000, height: 700)
+        write(SnapshotFrame(screen: screen, survey: survey)
+                .environment(\.colorScheme, scheme)
+                .frame(width: 1000, height: 700),
+              to: url)
+    }
 
+    private static func write(_ view: some View, to url: URL) {
         let renderer = ImageRenderer(content: view)
         renderer.scale = 2
         guard let cg = renderer.cgImage else { return }
