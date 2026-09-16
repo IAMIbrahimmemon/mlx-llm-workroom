@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
+  video.shot{background:#131211;}
   :root{
     --bg:#FBFAF8;--surf:#FFFFFF;--surf2:#F4F1EC;--ink:#1B1917;--ink2:#56504A;
     --ink3:#8C857D;--line:#E7E2DA;--line2:#D6CFC4;--accent:#C0603A;
@@ -141,9 +142,16 @@
   <p class="meta">Apple silicon &middot; macOS 14+ &middot; 16 GB memory or more &middot; needs <span class="mono">uv</span> &middot; MIT licensed</p>
 </div>
 
-<div class="wrap">
+<div class="wrap" id="demo">
   <figure>
-    <img class="shot" src="shots/0-welcome.png" alt="Workroom welcome screen">
+    <video class="shot" controls playsinline preload="metadata"
+           poster="demo-poster.png" width="1000">
+      <source src="demo.mp4" type="video/mp4">
+      <img class="shot" src="shots/0-welcome.png" alt="Workroom welcome screen">
+    </video>
+    <figcaption>Setup, start to finish &mdash; 38 seconds, no edits.
+      Recorded just before the project was renamed, so the app still says
+      &ldquo;Lab&rdquo; on screen.</figcaption>
   </figure>
 </div>
 

@@ -21,7 +21,14 @@ One model reads the screen, runs commands and edits files. Nothing leaves the ma
 
 ---
 
-<img src="docs/shots/0-welcome.png" width="100%" alt="AI should be simple.">
+<div align="center">
+
+<video src="https://github.com/IAMIbrahimmemon/mlx-llm-workroom/raw/main/docs/demo.mp4" controls poster="docs/demo-poster.png" width="100%"></video>
+
+<em>Setup start to finish, 38 seconds, no edits. Recorded just before the rename, so the app still says &ldquo;Lab&rdquo; on screen.<br>
+Video not playing? <a href="https://iamibrahimmemon.github.io/mlx-llm-workroom/#demo">Watch it on the site</a>.</em>
+
+</div>
 
 ## Why bother
 
