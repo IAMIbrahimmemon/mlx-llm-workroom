@@ -1,0 +1,7 @@
+Lab — design system (from scratch)
+Type:  Instrument Serif (display, 400) + Instrument Sans (UI 400/500/600) + JetBrains Mono (terminal)
+Light: bg #FBFAF8 surf #FFFFFF surf2 #F4F1EC ink #1B1917 ink2 #56504A ink3 #8C857D line #E7E2DA line2 #D6CFC4
+Dark:  bg #131211 surf #1C1A18 surf2 #232120 ink #F3EFE9 ink2 #B4ADA4 ink3 #7E776E line #2C2927 line2 #3A3633
+Accent (burnt ember) light #C0603A  dark #E08A5E      -- oklch(.62 .15 45) / oklch(.72 .15 45)
+OK (ready)          light #2E7D5B  dark #5FB98F       -- oklch(.62 .15 155) / same L,C different hue
+Motion: riseIn 0.7s cubic-bezier(.22,1,.36,1) staggered; breathe 4s; shimmer 1.8s

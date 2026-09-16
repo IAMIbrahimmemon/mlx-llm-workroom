@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# Swift
+macapp/.build/
+macapp/build/
+*.xcuserdatad/
+
+# Build artefacts
+assets/Workroom.iconset/
+design/workroom-onboarding.html
+design/lab-onboarding.html
+design/_head.part
+design/_bar.part
+
+# Yours, not the repo's
+memory/
+.DS_Store

@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;}
+.workroom{--bg:#FBFAF8;--surf:#FFFFFF;--surf2:#F4F1EC;--ink:#1B1917;--ink2:#56504A;--ink3:#8C857D;--line:#E7E2DA;--line2:#D6CFC4;--accent:#C0603A;--accentSoft:#FBEFE8;--accentRule:rgba(192,96,58,.22);--accentTrack:rgba(192,96,58,.18);--accentGlow:rgba(192,96,58,.34);--ok:#2E7D5B;--okSoft:#E8F2ED;--sh:0 1px 2px rgba(27,25,23,.05),0 10px 30px rgba(27,25,23,.06);}
+.workroom.dark{--bg:#131211;--surf:#1C1A18;--surf2:#232120;--ink:#F3EFE9;--ink2:#B4ADA4;--ink3:#7E776E;--line:#2C2927;--line2:#3A3633;--accent:#E08A5E;--accentSoft:#2A1E18;--accentRule:rgba(224,138,94,.28);--accentTrack:rgba(224,138,94,.22);--accentGlow:rgba(224,138,94,.30);--ok:#5FB98F;--okSoft:#16241E;--sh:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.4);}
+a{color:var(--accent);text-decoration:none;}
+a:hover{color:var(--ink);}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.9;}50%{transform:scale(1.05);opacity:1;}}
+@keyframes halo{0%{transform:scale(.92);opacity:.45;}70%{transform:scale(1.3);opacity:0;}100%{opacity:0;}}
+@keyframes shim{from{transform:translateX(-110%);}to{transform:translateX(340%);}}
+.r{animation:rise .7s cubic-bezier(.22,1,.36,1) both;}
+</style>
+</helmet>
+<div class="workroom {{theme}}" style="width:1000px;height:700px;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;overflow:hidden;">
+<div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 20px;flex-shrink:0;">
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;padding:10px 72px 0;min-height:0;">
+
+<div style="margin-bottom:24px;">
+<h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-.018em;margin:0 0 9px;">How much of this Mac gets to think?</h1>
+<p style="font-size:15px;line-height:1.5;color:var(--ink2);margin:0;max-width:560px;">MLX keeps the model in unified memory, which your apps share. Setting a ceiling is how you decide who wins when both want it at once.</p>
+</div>
+
+<div style="margin-bottom:26px;">
+<div style="display:flex;height:46px;border-radius:11px;overflow:hidden;border:1px solid var(--line);background:var(--surf2);">
+<div style="display:flex;align-items:center;padding-left:16px;background:var(--accent);color:#fff;font-size:13px;font-weight:600;white-space:nowrap;transition:width .45s cubic-bezier(.22,1,.36,1);width:{{pct}};">{{capLabel}}</div>
+<div style="flex:1;display:flex;align-items:center;justify-content:flex-end;padding-right:16px;font-size:13px;font-weight:500;color:var(--ink2);white-space:nowrap;">{{restLabel}}</div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:9px;font-size:11.5px;color:var(--ink3);font-family:'JetBrains Mono',ui-monospace,monospace;">
+<span>0</span><span>Workroom ceiling</span><span>everything else</span><span>24 GB</span>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;">
+<sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+<div onClick="{{m.pick}}" style="display:flex;flex-direction:column;padding:20px 22px;border-radius:14px;cursor:pointer;transition:border-color .18s ease,background .18s ease;border:1px solid {{m.bc}};background:{{m.bg}};box-shadow:{{m.sh}};">
+<div style="display:flex;align-items:center;gap:11px;margin-bottom:12px;">
+<div style="width:19px;height:19px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1.5px solid {{m.ring}};background:{{m.ringBg}};">
+<div style="width:7px;height:7px;border-radius:50%;background:{{m.dot}};"></div>
+</div>
+<span style="font-size:16px;font-weight:600;letter-spacing:-.01em;">{{m.title}}</span>
+<sc-if value="{{m.badge}}" hint-placeholder-val="{{true}}"><span style="font-size:10.5px;font-weight:600;letter-spacing:.055em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 7px;">{{m.badge}}</span></sc-if>
+</div>
+<div style="font-size:34px;font-weight:600;letter-spacing:-.025em;line-height:1;margin-bottom:12px;">{{m.gb}}<span style="font-size:16px;font-weight:500;color:var(--ink3);margin-left:4px;">GB ceiling</span></div>
+<div style="font-size:13.5px;line-height:1.55;color:var(--ink2);margin-bottom:14px;">{{m.desc}}</div>
+<div style="display:flex;gap:16px;padding-top:13px;border-top:1px solid {{m.rule}};font-size:12px;color:var(--ink3);font-family:'JetBrains Mono',ui-monospace,monospace;">
+<span>{{m.tps}}</span><span>{{m.ctx}}</span>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="margin-top:auto;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--surf2);border-radius:11px;padding:14px 18px;">
+<div style="display:flex;align-items:center;gap:12px;min-width:0;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink3);flex-shrink:0;"><path d="M4 17l6-5-6-5M12 19h8"></path></svg>
+<span style="font-size:12.5px;font-family:'JetBrains Mono',ui-monospace,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:{{cmdColor}};">{{cmd}}</span>
+</div>
+<span style="font-size:12.5px;white-space:nowrap;color:{{noteColor}};">{{note}}</span>
+</div>
+
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;padding:18px 72px 24px;border-top:1px solid var(--line);flex-shrink:0;">
+<button style="height:42px;padding:0 18px;border:1px solid var(--line2);border-radius:10px;background:transparent;color:var(--ink2);font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;">Back</button>
+<div style="display:flex;gap:7px;">
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+</div>
+<button style="height:42px;padding:0 24px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;">Continue</button>
+</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Theme"},"$preview":{"width":1000,"height":700}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mode: 'work' }; }
+
+  renderVals() {
+    // Measured on this Mac: decode is bandwidth-bound, so a bigger ceiling
+    // buys context, not tok/s. Both presets run at ~16 tok/s.
+    // Measured on this Mac: Metal reports a 17.8 GB max recommended working
+    // set, so only the 18 GB preset needs the system-wide sysctl raised.
+    const raw = [
+      { id: 'work', title: 'Alongside your work', badge: 'Recommended', gb: 12, mb: 12288, sudo: false, tps: '~16 tok/s', ctx: '16k context',
+        desc: 'You carry on using this Mac. Chrome, Xcode and Slack stay quick, and Workroom gives ground when they need memory.' },
+      { id: 'all', title: 'All yours', badge: '', gb: 18, mb: 18432, sudo: true, tps: '~16 tok/s', ctx: '32k context',
+        desc: 'For a Mac you walk away from. Same speed, twice the context, and it never gets evicted when something else wants memory.' },
+    ];
+    const cur = raw.find((m) => m.id === this.state.mode) || raw[0];
+    const modes = raw.map((m) => {
+      const sel = this.state.mode === m.id;
+      return Object.assign({}, m, {
+        bc: sel ? 'var(--accent)' : 'var(--line)',
+        bg: sel ? 'var(--accentSoft)' : 'var(--surf)',
+        sh: sel ? 'var(--sh)' : 'none',
+        ring: sel ? 'var(--accent)' : 'var(--line2)',
+        ringBg: sel ? 'var(--accent)' : 'transparent',
+        dot: sel ? '#fff' : 'transparent',
+        rule: sel ? 'var(--accentRule)' : 'var(--line)',
+        pick: () => this.setState({ mode: m.id }),
+      });
+    });
+    return {
+      theme: this.props.theme ?? 'light',
+      modes,
+      cmd: cur.sudo ? 'sudo sysctl -w iogpu.wired_limit_mb=' + cur.mb : 'no system change needed',
+      cmdColor: cur.sudo ? 'var(--ink2)' : 'var(--ok)',
+      note: cur.sudo
+        ? 'Asks for your admin password once per boot'
+        : 'macOS already allows this much. Nothing to approve.',
+      noteColor: cur.sudo ? 'var(--ink3)' : 'var(--ok)',
+      pct: Math.round((cur.gb / 24) * 100) + '%',
+      capLabel: 'Workroom  ·  ' + cur.gb + ' GB',
+      restLabel: (24 - cur.gb) + ' GB for macOS and your apps',
+    };
+  }
+}
+</script>
+</body>
+</html>

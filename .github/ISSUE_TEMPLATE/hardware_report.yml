@@ -1,0 +1,24 @@
+name: Hardware report
+description: Share benchmark numbers from a Mac that is not a base M3
+labels: [hardware]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Every speed figure in this project was measured on one machine: a base
+        M3 with 24 GB. A second data point is genuinely useful, especially from
+        an M-series Max/Ultra or a 16 GB machine.
+
+  - type: input
+    id: machine
+    attributes:
+      label: Machine
+      placeholder: "M4 Pro, 48 GB, macOS 26.1"
+    validations: { required: true }
+
+  - type: textarea
+    id: bench
+    attributes:
+      label: Output of `uv run python scripts/bench_tps.py`
+      render: shell
+    validations: { required: true }

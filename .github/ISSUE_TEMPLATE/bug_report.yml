@@ -1,0 +1,31 @@
+name: Bug report
+description: Something behaves differently from how it reads
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked for, and what it did instead.
+    validations: { required: true }
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `uv run workroom doctor`
+      description: >
+        This reports your chip, memory, macOS version, installed models and
+        which gateways answer. It is most of what is needed to reproduce a
+        problem. Redact anything you would rather not share.
+      render: shell
+    validations: { required: true }
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to reproduce it
+      placeholder: |
+        1. uv run workroom
+        2. ask it to ...
+        3. ...
+    validations: { required: true }

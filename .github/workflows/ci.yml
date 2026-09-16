@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    name: Python
+    # Apple silicon: the project targets MLX, so an Intel runner proves nothing.
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - run: uv sync --frozen
+      - run: uv run pytest -q
+
+      # No weights on the runner, so this exercises the paths that must work
+      # on a machine where nothing has been downloaded yet.
+      - name: Discovery survives an empty machine
+        run: uv run python -m agent.bridge survey > /dev/null
+
+  swift:
+    name: macOS app
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - run: swift build --package-path macapp
+      - name: Fail on warnings
+        run: |
+          out=$(swift build --package-path macapp 2>&1)
+          echo "$out"
+          if echo "$out" | grep -q "warning:"; then
+            echo "::error::Swift build produced warnings"
+            exit 1
+          fi

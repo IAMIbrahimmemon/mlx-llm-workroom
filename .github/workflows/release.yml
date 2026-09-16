@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build (e.g. v0.1.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  app:
+    name: Build and attach Workroom.app
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build the app bundle
+        run: |
+          cd macapp
+          ./bundle.sh release
+
+      - name: Zip it
+        run: |
+          cd macapp/build
+          # ditto preserves the bundle's structure and resource forks; `zip`
+          # is known to mangle .app bundles.
+          ditto -c -k --sequesterRsrc --keepParent Workroom.app Workroom.zip
+          shasum -a 256 Workroom.zip > Workroom.zip.sha256
+          cat Workroom.zip.sha256
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          files: |
+            macapp/build/Workroom.zip
+            macapp/build/Workroom.zip.sha256
+          generate_release_notes: true

@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;}
+.workroom{--bg:#FBFAF8;--surf:#FFFFFF;--surf2:#F4F1EC;--ink:#1B1917;--ink2:#56504A;--ink3:#8C857D;--line:#E7E2DA;--line2:#D6CFC4;--accent:#C0603A;--accentSoft:#FBEFE8;--accentRule:rgba(192,96,58,.22);--accentTrack:rgba(192,96,58,.18);--accentGlow:rgba(192,96,58,.34);--ok:#2E7D5B;--okSoft:#E8F2ED;--sh:0 1px 2px rgba(27,25,23,.05),0 10px 30px rgba(27,25,23,.06);}
+.workroom.dark{--bg:#131211;--surf:#1C1A18;--surf2:#232120;--ink:#F3EFE9;--ink2:#B4ADA4;--ink3:#7E776E;--line:#2C2927;--line2:#3A3633;--accent:#E08A5E;--accentSoft:#2A1E18;--accentRule:rgba(224,138,94,.28);--accentTrack:rgba(224,138,94,.22);--accentGlow:rgba(224,138,94,.30);--ok:#5FB98F;--okSoft:#16241E;--sh:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.4);}
+a{color:var(--accent);text-decoration:none;}
+a:hover{color:var(--ink);}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.9;}50%{transform:scale(1.05);opacity:1;}}
+@keyframes halo{0%{transform:scale(.92);opacity:.45;}70%{transform:scale(1.3);opacity:0;}100%{opacity:0;}}
+@keyframes shim{from{transform:translateX(-110%);}to{transform:translateX(340%);}}
+.r{animation:rise .7s cubic-bezier(.22,1,.36,1) both;}
+</style>
+</helmet>
+<div class="workroom {{theme}}" style="width:1000px;height:700px;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;overflow:hidden;">
+<style>@keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}</style>
+<div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 20px;flex-shrink:0;">
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 72px 30px;text-align:center;">
+
+<div class="r" style="animation-delay:.05s;position:relative;width:54px;height:54px;display:flex;align-items:center;justify-content:center;margin-bottom:26px;">
+<div style="position:absolute;width:54px;height:54px;border-radius:50%;background:var(--ok);opacity:.16;animation:halo 3.4s ease-out infinite;"></div>
+<div style="width:38px;height:38px;border-radius:50%;background:var(--okSoft);border:1px solid var(--ok);display:flex;align-items:center;justify-content:center;">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ok);"><path d="M6 12.4l4 3.8 8-8.4"></path></svg>
+</div>
+</div>
+
+<h1 class="r" style="animation-delay:.12s;font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:52px;line-height:1.04;letter-spacing:-.02em;margin:0 0 12px;">You&#39;re set.</h1>
+<p class="r" style="animation-delay:.2s;font-size:16px;line-height:1.55;color:var(--ink2);margin:0 0 26px;max-width:470px;">Workroom lives in your terminal from here. Ask it for something in plain English and watch what it does.</p>
+
+<div class="r" style="animation-delay:.28s;display:flex;gap:9px;margin-bottom:28px;">
+<div style="display:flex;align-items:center;gap:7px;padding:6px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surf);font-size:12.5px;font-weight:500;">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ok);"><path d="M6 12.4l4 3.8 8-8.4"></path></svg>Accessibility</div>
+<div style="display:flex;align-items:center;gap:7px;padding:6px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surf);font-size:12.5px;font-weight:500;">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ok);"><path d="M6 12.4l4 3.8 8-8.4"></path></svg>Screen Recording</div>
+<div style="display:flex;align-items:center;gap:7px;padding:6px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surf);font-size:12.5px;font-weight:500;">
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ok);"><path d="M6 12.4l4 3.8 8-8.4"></path></svg>12 GB reserved</div>
+</div>
+
+<div class="r" style="animation-delay:.36s;width:100%;max-width:660px;background:#14130F;border-radius:14px;padding:20px 22px;text-align:left;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;line-height:1.85;box-shadow:0 12px 38px rgba(20,19,15,.28);margin-bottom:28px;">
+<div style="display:flex;gap:7px;margin-bottom:15px;">
+<div style="width:9px;height:9px;border-radius:50%;background:#3A3630;"></div>
+<div style="width:9px;height:9px;border-radius:50%;background:#3A3630;"></div>
+<div style="width:9px;height:9px;border-radius:50%;background:#3A3630;"></div>
+</div>
+<div style="color:#8C857A;">$ <span style="color:#E8E3DA;">workroom</span></div>
+<div style="color:#E08A5E;">workroom 1.0 &middot; Qwen3.5-9B 4-bit MLX &middot; 12 GB ceiling &middot; 16k ctx</div>
+<div style="color:#5FB98F;">screen and accessibility granted &middot; memory 9.4 / 12 GB</div>
+<div style="height:10px;"></div>
+<div style="color:#E8E3DA;"><span style="color:#E08A5E;">&rsaquo;</span> tidy up ~/Downloads and leave me a one-page summary<span style="display:inline-block;width:8px;height:15px;background:#E8E3DA;vertical-align:-3px;margin-left:3px;animation:blink 1.1s steps(1,end) infinite;"></span></div>
+</div>
+
+<div class="r" style="animation-delay:.44s;display:flex;align-items:center;gap:14px;">
+<button style="height:46px;padding:0 26px;border:none;border-radius:11px;background:var(--accent);color:#fff;font-family:inherit;font-size:15px;font-weight:600;letter-spacing:-.005em;cursor:pointer;box-shadow:var(--sh);">Open Workroom in Terminal</button>
+<button style="height:46px;padding:0 20px;border:1px solid var(--line2);border-radius:11px;background:transparent;color:var(--ink2);font-family:inherit;font-size:15px;font-weight:500;cursor:pointer;">Show me around first</button>
+</div>
+
+<div class="r" style="animation-delay:.52s;margin-top:22px;font-size:12.5px;color:var(--ink3);">Sessions and notes are written to <span style="font-family:'JetBrains Mono',ui-monospace,monospace;">~/.workroom</span> as plain markdown. Yours to read or delete.</div>
+
+</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Theme"},"$preview":{"width":1000,"height":700}}'>
+class Component extends DCLogic {
+  renderVals() { return { theme: this.props.theme ?? 'light' }; }
+}
+</script>
+</body>
+</html>

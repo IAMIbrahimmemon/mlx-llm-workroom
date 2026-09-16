@@ -1,0 +1,17 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",        "x": 0,    "y": 0,   "w": 1000, "h": 700, "title": "1 · Welcome" },
+    { "file": "Promise.dc.html",     "x": 1120, "y": 0,   "w": 1000, "h": 700, "title": "2 · Why local" },
+    { "file": "TextModel.dc.html",   "x": 2240, "y": 0,   "w": 1000, "h": 700, "title": "3 · Text model", "is_interactive": true },
+    { "file": "VisionModel.dc.html", "x": 3360, "y": 0,   "w": 1000, "h": 700, "title": "4 · Vision model", "is_interactive": true },
+    { "file": "Memory.dc.html",      "x": 0,    "y": 860, "w": 1000, "h": 700, "title": "5 · Memory ceiling", "is_interactive": true },
+    { "file": "Downloading.dc.html", "x": 1120, "y": 860, "w": 1000, "h": 700, "title": "6 · Downloading" },
+    { "file": "Launch.dc.html",      "x": 2240, "y": 860, "w": 1000, "h": 700, "title": "7 · Launch CLI" }
+  ],
+  "annotations": [
+    { "id": "flow", "x": 0, "y": -170, "w": 640, "text": "Workroom — first run, left to right then down.\nWorking controls on 3, 4 and 5: the Download / On this Mac / Gateway tabs, the vision rows, and the two memory presets.\nEvery artboard has a light/dark chip above it." },
+    { "id": "detected", "x": 2240, "y": -170, "w": 640, "text": "Screen 3's On this Mac and Gateway rows are what agent/discovery.py actually returns on this machine: Ollama answering on 11434, gpt-oss:20b and qwen3-coder:30b pulled, LM Studio silent on 1234." },
+    { "id": "sudo", "x": 0, "y": 1600, "w": 640, "text": "Picking a preset on 5 re-animates the split bar and rewrites the line beneath it. Only All yours (18 GB) crosses the 17.8 GB working set macOS grants one process here, so only that one asks for a password." }
+  ],
+  "launch": { "view": "canvas" }
+}

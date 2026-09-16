@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;}
+.workroom{--bg:#FBFAF8;--surf:#FFFFFF;--surf2:#F4F1EC;--ink:#1B1917;--ink2:#56504A;--ink3:#8C857D;--line:#E7E2DA;--line2:#D6CFC4;--accent:#C0603A;--accentSoft:#FBEFE8;--accentRule:rgba(192,96,58,.22);--accentTrack:rgba(192,96,58,.18);--accentGlow:rgba(192,96,58,.34);--ok:#2E7D5B;--okSoft:#E8F2ED;--sh:0 1px 2px rgba(27,25,23,.05),0 10px 30px rgba(27,25,23,.06);}
+.workroom.dark{--bg:#131211;--surf:#1C1A18;--surf2:#232120;--ink:#F3EFE9;--ink2:#B4ADA4;--ink3:#7E776E;--line:#2C2927;--line2:#3A3633;--accent:#E08A5E;--accentSoft:#2A1E18;--accentRule:rgba(224,138,94,.28);--accentTrack:rgba(224,138,94,.22);--accentGlow:rgba(224,138,94,.30);--ok:#5FB98F;--okSoft:#16241E;--sh:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.4);}
+a{color:var(--accent);text-decoration:none;}
+a:hover{color:var(--ink);}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.9;}50%{transform:scale(1.05);opacity:1;}}
+@keyframes halo{0%{transform:scale(.92);opacity:.45;}70%{transform:scale(1.3);opacity:0;}100%{opacity:0;}}
+@keyframes shim{from{transform:translateX(-110%);}to{transform:translateX(340%);}}
+.r{animation:rise .7s cubic-bezier(.22,1,.36,1) both;}
+</style>
+</helmet>
+<div class="workroom {{theme}}" style="width:1000px;height:700px;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;overflow:hidden;">
+<div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 20px;flex-shrink:0;">
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:12px;height:12px;border-radius:50%;background:var(--line2);"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;padding:10px 72px 0;min-height:0;">
+
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:22px;">
+<div>
+<h1 style="font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-.018em;margin:0 0 9px;">Choose a brain.</h1>
+<p style="font-size:15px;line-height:1.5;color:var(--ink2);margin:0;max-width:490px;">Workroom needs one text model. If you have no idea what any of this means, take the recommendation &mdash; it is the right answer for this Mac.</p>
+</div>
+<div style="display:flex;padding:3px;background:var(--surf2);border-radius:10px;gap:2px;flex-shrink:0;">
+<sc-for list="{{tabs}}" as="tab" hint-placeholder-count="3">
+<button onClick="{{tab.pick}}" style="height:32px;padding:0 15px;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{tab.bg}};color:{{tab.fg}};box-shadow:{{tab.sh}};">{{tab.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;">
+<sc-for list="{{rows}}" as="row" hint-placeholder-count="3">
+<div onClick="{{row.pick}}" style="display:flex;align-items:flex-start;gap:15px;padding:17px 20px;border-radius:13px;cursor:pointer;transition:border-color .18s ease,background .18s ease;border:1px solid {{row.bc}};background:{{row.bg}};box-shadow:{{row.sh}};opacity:{{row.op}};">
+<div style="width:19px;height:19px;border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;border:1.5px solid {{row.ring}};background:{{row.ringBg}};">
+<div style="width:7px;height:7px;border-radius:50%;background:{{row.dot}};"></div>
+</div>
+<div style="flex:1;min-width:0;">
+<div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
+<span style="font-size:15.5px;font-weight:600;letter-spacing:-.01em;">{{row.name}}</span>
+<sc-if value="{{row.badge}}" hint-placeholder-val="{{true}}"><span style="font-size:10.5px;font-weight:600;letter-spacing:.055em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 7px;">{{row.badge}}</span></sc-if>
+<span style="font-size:12.5px;color:var(--ink3);font-family:'JetBrains Mono',ui-monospace,monospace;">{{row.meta}}</span>
+</div>
+<div style="font-size:13.5px;line-height:1.5;color:var(--ink2);">{{row.desc}}</div>
+</div>
+<div style="font-size:12.5px;font-weight:500;white-space:nowrap;margin-top:3px;font-family:'JetBrains Mono',ui-monospace,monospace;color:{{row.rc}};">{{row.right}}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;margin-top:16px;font-size:12.5px;color:var(--ink3);">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 7.6v.5"></path></svg>
+<span>{{hint}}</span>
+</div>
+
+</div>
+
+<div style="display:flex;align-items:center;justify-content:space-between;padding:18px 72px 24px;border-top:1px solid var(--line);flex-shrink:0;">
+<button style="height:42px;padding:0 18px;border:1px solid var(--line2);border-radius:10px;background:transparent;color:var(--ink2);font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;">Back</button>
+<div style="display:flex;gap:7px;">
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+<div style="width:6px;height:6px;border-radius:50%;background:var(--line2);"></div>
+</div>
+<button style="height:42px;padding:0 24px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;">Continue</button>
+</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light","section":"Theme"},"$preview":{"width":1000,"height":700}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    // One selection per tab: the three catalogues have disjoint ids, so a
+    // single flat `picked` left the other two tabs with nothing chosen.
+    this.state = { tab: 'download', picked: { download: 'q9', local: 'oss', gateway: 'ollama' } };
+  }
+
+  catalogue() {
+    return {
+      download: {
+        hint: 'From Hugging Face into ~/.cache/huggingface. The recommendation also brings a 1.5 GB summariser that keeps long sessions from filling up.',
+        rows: [
+          { id: 'q9', name: 'Qwen3.5-9B', badge: 'Recommended', meta: '4-bit MLX  ·  5.98 GB', right: '~16 tok/s',
+            desc: 'Reads your screen, writes code and calls tools. Leaves room for Chrome and Xcode alongside it.' },
+          { id: 'q4', name: 'Qwen3.5-4B', badge: '', meta: '4-bit MLX  ·  2.9 GB', right: '~30 tok/s',
+            desc: 'Twice the speed, noticeably clumsier with tools. Worth it on a Mac that is always busy.' },
+          { id: 'q27', name: 'Qwen3.5-27B', badge: '', meta: '4-bit MLX  ·  17 GB', right: 'Too large', disabled: true,
+            desc: 'Sharper, but it would not leave enough memory for the rest of your Mac.' },
+        ],
+      },
+      local: {
+        hint: 'Two models already on this Mac. Workroom will use them where they are.',
+        rows: [
+          { id: 'oss', name: 'gpt-oss:20b', badge: '', meta: 'Ollama  ·  13 GB', right: 'Installed',
+            desc: 'Found on this Mac. Good at text and tools; it cannot see your screen.' },
+          { id: 'qc', name: 'qwen3-coder:30b', badge: '', meta: 'Ollama  ·  18 GB', right: 'Installed',
+            desc: 'Found on this Mac. Strong at code, slow once a file gets long.' },
+          { id: 'folder', name: 'Choose a folder', badge: '', meta: 'MLX or GGUF weights', right: 'Browse',
+            desc: 'Point Workroom at weights you downloaded yourself and it will work out the rest.' },
+        ],
+      },
+      gateway: {
+        hint: 'Gateways are reached over plain HTTP on localhost. Nothing leaves the machine.',
+        rows: [
+          { id: 'ollama', name: 'Ollama', badge: '', meta: '127.0.0.1:11434', right: 'Connected', ok: true,
+            desc: 'Answering right now, with three models registered. Workroom can borrow any of them.' },
+          { id: 'lms', name: 'LM Studio', badge: '', meta: '127.0.0.1:1234', right: 'Not found', disabled: true,
+            desc: 'Nothing is listening. Start the local server inside LM Studio and this will light up.' },
+          { id: 'custom', name: 'Custom endpoint', badge: '', meta: 'OpenAI-compatible URL', right: 'Add',
+            desc: 'llama.cpp, vLLM, an MLX server, or anything else you already run.' },
+        ],
+      },
+    };
+  }
+
+  renderVals() {
+    const cat = this.catalogue();
+    const active = this.state.tab;
+    const tabs = [['download', 'Download'], ['local', 'On this Mac'], ['gateway', 'Gateway']].map(([id, label]) => ({
+      label,
+      bg: active === id ? 'var(--surf)' : 'transparent',
+      fg: active === id ? 'var(--ink)' : 'var(--ink3)',
+      sh: active === id ? '0 1px 2px rgba(0,0,0,.12)' : 'none',
+      pick: () => this.setState({ tab: id }),
+    }));
+    const rows = cat[active].rows.map((r) => {
+      const sel = !r.disabled && this.state.picked[active] === r.id;
+      return Object.assign({}, r, {
+        bc: sel ? 'var(--accent)' : 'var(--line)',
+        bg: sel ? 'var(--accentSoft)' : 'var(--surf)',
+        sh: sel ? 'var(--sh)' : 'none',
+        op: r.disabled ? '.45' : '1',
+        ring: sel ? 'var(--accent)' : 'var(--line2)',
+        ringBg: sel ? 'var(--accent)' : 'transparent',
+        dot: sel ? '#fff' : 'transparent',
+        rc: r.ok ? 'var(--ok)' : 'var(--ink3)',
+        pick: r.disabled ? () => {} : () => this.setState({
+          picked: Object.assign({}, this.state.picked, { [active]: r.id }),
+        }),
+      });
+    });
+    return { theme: this.props.theme ?? 'light', tabs, rows, hint: cat[active].hint };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workroom — a local computer-use agent for your Mac</title>
+<meta name="description" content="One model reads your screen, runs commands and edits files, entirely on your Mac. Open source, MIT licensed, Apple silicon only.">
+<link rel="icon" type="image/png" href="icon.png">
+<meta property="og:title" content="Workroom">
+<meta property="og:description" content="A computer-use agent that runs entirely on your Mac. Nothing leaves the machine.">
+<meta property="og:image" content="https://iamibrahimmemon.github.io/mlx-llm-workroom/shots/0-welcome.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#FBFAF8;--surf:#FFFFFF;--surf2:#F4F1EC;--ink:#1B1917;--ink2:#56504A;
+    --ink3:#8C857D;--line:#E7E2DA;--line2:#D6CFC4;--accent:#C0603A;
+    --accentSoft:#FBEFE8;--ok:#2E7D5B;
+    --sh:0 1px 2px rgba(27,25,23,.05),0 10px 30px rgba(27,25,23,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#131211;--surf:#1C1A18;--surf2:#232120;--ink:#F3EFE9;--ink2:#B4ADA4;
+      --ink3:#7E776E;--line:#2C2927;--line2:#3A3633;--accent:#E08A5E;
+      --accentSoft:#2A1E18;--ok:#5FB98F;
+      --sh:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#131211;--surf:#1C1A18;--surf2:#232120;--ink:#F3EFE9;--ink2:#B4ADA4;
+    --ink3:#7E776E;--line:#2C2927;--line2:#3A3633;--accent:#E08A5E;
+    --accentSoft:#2A1E18;--ok:#5FB98F;
+    --sh:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.55;
+  }
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{color:var(--ink);}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 16px;}
+  h1,h2{font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.02em;margin:0;}
+  code,.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,monospace;}
+
+  header{padding:28px 0;}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:17px;}
+  .brand img{width:30px;height:30px;border-radius:7px;}
+  .tag{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+       color:var(--ink3);border:1px solid var(--line);border-radius:999px;padding:3px 8px;}
+
+  .hero{padding:44px 0 56px;text-align:center;}
+  .hero h1{font-size:clamp(44px,8vw,76px);line-height:1.02;margin-bottom:20px;}
+  .hero p{font-size:clamp(16px,2.4vw,19px);color:var(--ink2);max-width:560px;
+          margin:0 auto 34px;text-wrap:pretty;}
+
+  .cta{display:flex;gap:14px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:9px;height:52px;padding:0 28px;
+       border-radius:12px;font-size:16px;font-weight:600;border:1px solid transparent;
+       transition:transform .16s ease,opacity .16s ease;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:var(--sh);}
+  .btn-primary:hover{color:#fff;opacity:.92;}
+  .btn-ghost{border-color:var(--line2);color:var(--ink2);}
+  .meta{font-size:13px;color:var(--ink3);margin-top:16px;}
+
+  .shot{width:100%;border-radius:14px;border:1px solid var(--line);
+        box-shadow:var(--sh);display:block;}
+  figure{margin:0 0 18px;}
+  figcaption{font-size:13px;color:var(--ink3);margin-top:10px;text-align:center;}
+
+  section{padding:52px 0;border-top:1px solid var(--line);}
+  section h2{font-size:clamp(30px,5vw,40px);margin-bottom:14px;}
+  section > .wrap > p{color:var(--ink2);max-width:620px;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+        gap:16px;margin-top:30px;}
+  .card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:22px;}
+  .card h3{font-size:16px;font-weight:600;margin:0 0 8px;letter-spacing:-.01em;}
+  .card p{font-size:14px;color:var(--ink2);margin:0;}
+
+  table{width:100%;border-collapse:collapse;margin-top:24px;font-size:14.5px;}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);}
+  th{font-weight:600;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);}
+  td.num{font-family:'JetBrains Mono',ui-monospace,monospace;}
+
+  .note{background:var(--accentSoft);border:1px solid var(--accent);border-radius:13px;
+        padding:18px 20px;margin-top:28px;}
+  .note strong{display:block;margin-bottom:6px;}
+  .note p{margin:0;font-size:14.5px;color:var(--ink2);}
+  .steps{margin:12px 0 0;padding-left:20px;font-size:14.5px;color:var(--ink2);}
+  .steps li{margin-bottom:5px;}
+
+  pre{background:#14130F;color:#E8E3DA;border-radius:13px;padding:20px 22px;
+      overflow-x:auto;font-size:13.5px;line-height:1.75;margin-top:24px;}
+  pre .c{color:#8C857A;} pre .a{color:#E08A5E;} pre .g{color:#5FB98F;}
+
+  footer{padding:44px 0 60px;border-top:1px solid var(--line);
+         color:var(--ink3);font-size:13.5px;
+         display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+
+  @media (max-width:640px){
+    .hero{padding:28px 0 40px;}
+    section{padding:40px 0;}
+    .btn{width:100%;justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <img src="icon.png" alt="">
+    <span>Workroom</span>
+    <span class="tag">Local</span>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <h1>AI should be simple.</h1>
+  <p>A computer-use agent that runs entirely on your Mac. One model reads the
+     screen, runs commands and edits files &mdash; with no account, no API key,
+     and nothing leaving the machine.</p>
+  <div class="cta">
+    <a class="btn btn-primary" id="dl"
+       href="https://github.com/IAMIbrahimmemon/mlx-llm-workroom/releases/latest">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v12M7.5 11l4.5 4.5 4.5-4.5M4.5 20h15"></path></svg>
+      Download for Mac
+    </a>
+    <a class="btn btn-ghost" href="https://github.com/IAMIbrahimmemon/mlx-llm-workroom">
+      View source
+    </a>
+  </div>
+  <p class="meta">Apple silicon &middot; macOS 14+ &middot; 16 GB memory or more &middot; MIT licensed</p>
+</div>
+
+<div class="wrap">
+  <figure>
+    <img class="shot" src="shots/0-welcome.png" alt="Workroom welcome screen">
+  </figure>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Opening it the first time</h2>
+    <p>Workroom is not notarised &mdash; it is a free open-source project and
+       Apple charges for a developer account. macOS will refuse to open it on
+       the first attempt. This is the standard way around that, and you only do
+       it once.</p>
+    <div class="note">
+      <strong>Right-click, don't double-click</strong>
+      <ol class="steps">
+        <li>Unzip and drag <span class="mono">Workroom.app</span> to Applications.</li>
+        <li><strong>Right-click</strong> it (or Control-click) and choose <strong>Open</strong>.</li>
+        <li>In the dialog that appears, click <strong>Open</strong> again.</li>
+      </ol>
+      <p style="margin-top:10px">After that it launches normally. If macOS still
+         blocks it, go to System Settings &rarr; Privacy &amp; Security and click
+         <strong>Open Anyway</strong>.</p>
+    </div>
+    <p style="margin-top:22px">Prefer not to run unsigned software? The command
+       line does the same job, from source you can read:</p>
+<pre><span class="c">$</span> git clone https://github.com/IAMIbrahimmemon/mlx-llm-workroom
+<span class="c">$</span> cd mlx-llm-workroom &amp;&amp; uv sync
+<span class="c">$</span> uv run workroom</pre>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>It uses what you already have</h2>
+    <p>Onboarding looks at the machine before it offers you anything: models in
+       your Hugging Face cache, models you have pulled with Ollama, and any
+       OpenAI-compatible gateway already listening on localhost.</p>
+    <figure style="margin-top:28px">
+      <img class="shot" src="shots/2-textModel.png" alt="Choosing a model">
+      <figcaption>If none of it means anything to you, take the recommendation.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>You decide what it may use</h2>
+    <p>On Apple silicon the model's weights and your browser tabs draw on the
+       same memory. Workroom asks once where the ceiling goes, and tells you
+       which answer needs an admin password.</p>
+    <figure style="margin-top:28px">
+      <img class="shot" src="shots/4-memory.png" alt="Memory ceiling">
+    </figure>
+    <table>
+      <thead><tr><th>Preset</th><th>On a 24 GB Mac</th><th>Password</th><th>For</th></tr></thead>
+      <tbody>
+        <tr><td>Alongside your work</td><td class="num">12 GB &middot; 16k ctx</td>
+            <td>no</td><td>you keep using the Mac</td></tr>
+        <tr><td>All yours</td><td class="num">18 GB &middot; 32k ctx</td>
+            <td>once per boot</td><td>you walk away and let it run</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:20px;font-size:14px">Both run at the same speed.
+       Decode is bound by memory bandwidth, not capacity, so a higher ceiling
+       buys context &mdash; not tokens per second.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Measured on real hardware</h2>
+    <p>Base M3, 24 GB, 12 GB ceiling. Every number in this project comes from a
+       machine, not an estimate.</p>
+    <table>
+      <thead><tr><th>Prompt</th><th>Tokens / sec</th><th>Peak memory</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1 000</td><td class="num">16.3</td><td class="num">6.54 GB</td></tr>
+        <tr><td class="num">8 000</td><td class="num">16.8</td><td class="num">7.70 GB</td></tr>
+        <tr><td class="num">16 000</td><td class="num">15.7</td><td class="num">8.48 GB</td></tr>
+      </tbody>
+    </table>
+    <div class="grid">
+      <div class="card"><h3>Everything stays here</h3>
+        <p>Screenshots, keystrokes and file contents are handled in memory on
+           your Mac. There is no server to trust.</p></div>
+      <div class="card"><h3>One model, not five</h3>
+        <p>Qwen3.5-9B reads your screen and writes your code from a single
+           5.98 GB set of 4-bit MLX weights.</p></div>
+      <div class="card"><h3>It asks before it bites</h3>
+        <p><span class="mono">sudo</span>, recursive deletes and force pushes
+           stop and ask. Disk formatting and keychain dumps never run at all.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;width:100%">
+    <span>MIT licensed. Model weights are Apache-2.0 from Qwen.</span>
+    <span>
+      <a href="https://github.com/IAMIbrahimmemon/mlx-llm-workroom">GitHub</a> &middot;
+      <a href="https://github.com/IAMIbrahimmemon/mlx-llm-workroom/issues">Issues</a> &middot;
+      <a href="https://github.com/IAMIbrahimmemon/mlx-llm-workroom/blob/main/SECURITY.md">Security</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+  // Name the actual asset on the download button once the release exists, so
+  // people see what they are getting rather than a bare "latest" link.
+  fetch('https://api.github.com/repos/IAMIbrahimmemon/mlx-llm-workroom/releases/latest')
+    .then(r => r.ok ? r.json() : null)
+    .then(rel => {
+      if (!rel) return;
+      const asset = (rel.assets || []).find(a => a.name.endsWith('.zip'));
+      if (!asset) return;
+      const btn = document.getElementById('dl');
+      btn.href = asset.browser_download_url;
+      const mb = (asset.size / 1e6).toFixed(1);
+      document.querySelector('.meta').textContent =
+        `${rel.tag_name} · ${mb} MB · Apple silicon · macOS 14+ · MIT licensed`;
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>
